@@ -1,0 +1,6 @@
+@HamburguerApi_HostAddress = http://localhost:5101
+
+GET {{HamburguerApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

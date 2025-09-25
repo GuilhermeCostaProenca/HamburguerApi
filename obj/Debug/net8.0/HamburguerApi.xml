@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HamburguerApi</name>
+    </assembly>
+    <members>
+        <member name="T:HamburguerApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HamburguerApi.Migrations.SeedFix_StaticDates">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.SeedFix_StaticDates.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.SeedFix_StaticDates.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.SeedFix_StaticDates.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

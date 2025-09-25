@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Lanchonete – Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0f1115; --card:#161a22; --muted:#cbd5e1; --acc:#38bdf8; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; }
+    body { margin:0; background:var(--bg); color:white; font-family:ui-sans-serif,system-ui,Arial; }
+    .wrap{ max-width:1000px; margin:32px auto; padding:0 16px; }
+    .card{ background:var(--card); padding:16px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
+    h1{ margin:0 0 16px; font-size:22px; }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    input,button{ padding:10px 12px; border-radius:10px; border:1px solid #2b3241; background:#0d1117; color:#e5e7eb; }
+    input:focus{ outline:1px solid var(--acc); }
+    button{ cursor:pointer; background:linear-gradient(180deg,#1e293b,#131a26); }
+    button.primary{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none; }
+    table{ width:100%; border-collapse:collapse; margin-top:12px; }
+    th,td{ border-bottom:1px solid #1f2736; padding:10px; }
+    th{ text-align:left; color:var(--muted); font-weight:600; }
+    .pill{ padding:3px 8px; border-radius:999px; font-size:12px; }
+    .ok{ background:#022c22; color:#86efac; } .off{ background:#3f1f1f; color:#fecaca; }
+    .muted{ color:var(--muted); }
+    .error{ color:#fecaca; background:#3f1f1f; border:1px solid #7f1d1d; padding:10px; border-radius:12px; display:none; }
+    .loader{ display:none; }
+    .pagination{ display:flex; gap:8px; justify-content:flex-end; padding-top:8px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Hambúrgueres</h1>
+
+      <div class="row">
+        <input id="nome" placeholder="Nome" required />
+        <input id="descricao" placeholder="Descrição" />
+        <input id="preco" type="number" step="0.01" placeholder="Preço" required />
+        <label class="muted"><input id="ativo" type="checkbox" checked /> Ativo</label>
+        <button id="btnAdd" class="primary">Adicionar</button>
+        <span id="loader" class="loader muted">Carregando...</span>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <input id="search" placeholder="Buscar por nome/descrição" />
+        <select id="sort">
+          <option value="">Ordenar por...</option>
+          <option value="Preco:asc">Preço ↑</option>
+          <option value="Preco:desc">Preço ↓</option>
+        </select>
+        <button id="btnBuscar">Buscar</button>
+      </div>
+
+      <div id="msg" class="error"></div>
+
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Nome</th><th>Preço</th><th>Status</th><th>Criado em</th><th>Ações</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div class="pagination">
+        <button id="prev">◀</button>
+        <span id="pinfo" class="muted"></span>
+        <button id="next">▶</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const api = location.origin + "/api/hamburguer";
+let page = 1, pageSize = 10, ultimoFiltro = {search:"", sort:""};
+
+const el = id => document.getElementById(id);
+const show = (node, on) => node.style.display = on ? "inline" : "none";
+
+async function carregar({search="", sort=""} = {}) {
+  ultimoFiltro = {search, sort};
+  const q = new URLSearchParams();
+  if (search) q.set("search", search);
+  if (sort) q.set("sort", sort);
+  q.set("page", page); q.set("pageSize", pageSize);
+
+  show(el("loader"), true); el("msg").style.display="none";
+
+  try {
+    const res = await fetch(`${api}?${q.toString()}`);
+    if (!res.ok) throw new Error("Falha ao buscar itens");
+    const data = await res.json();
+
+    // suporta { data, total } ou array simples
+    const list = Array.isArray(data) ? data : (data.data ?? []);
+    const total = Array.isArray(data) ? list.length : (data.total ?? list.length);
+
+    const tbody = el("tbody"); tbody.innerHTML = "";
+    list.forEach(h => {
+      const tr = document.createElement("tr");
+      const preco = (typeof h.preco === "number") ? h.preco.toFixed(2) : h.preco;
+      const criado = h.criadoEm ? new Date(h.criadoEm).toLocaleString() : "—";
+      tr.innerHTML = `
+        <td>${h.id}</td>
+        <td>${h.nome ?? h.Nome}</td>
+        <td>R$ ${preco}</td>
+        <td><span class="pill ${h.ativo ? 'ok' : 'off'}">${h.ativo ? 'Ativo' : 'Inativo'}</span></td>
+        <td class="muted">${criado}</td>
+        <td>
+          <button onclick="toggle(${h.id}, ${!h.ativo})">${h.ativo ? "Desativar" : "Ativar"}</button>
+          <button onclick="remover(${h.id})" style="color:#fecaca;border-color:#7f1d1d;">Excluir</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    el("pinfo").textContent = `Página ${page} de ${totalPages} — ${total} registros`;
+    el("prev").disabled = page <= 1;
+    el("next").disabled = page >= totalPages;
+  } catch (err) {
+    el("msg").textContent = err.message;
+    el("msg").style.display = "block";
+  } finally {
+    show(el("loader"), false);
+  }
+}
+
+async function toggle(id, ativo) {
+  await fetch(`${api}/${id}/ativar?ativo=${ativo}`, { method: "PATCH" });
+  carregar(ultimoFiltro);
+}
+
+async function remover(id) {
+  await fetch(`${api}/${id}`, { method: "DELETE" });
+  carregar(ultimoFiltro);
+}
+
+async function adicionar() {
+  const body = {
+    nome: el("nome").value.trim(),
+    descricao: el("descricao").value.trim(),
+    preco: parseFloat(el("preco").value),
+    ativo: el("ativo").checked
+  };
+  const res = await fetch(api, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    el("msg").textContent = err || "Erro ao adicionar";
+    el("msg").style.display = "block";
+    return;
+  }
+  el("nome").value = ""; el("descricao").value = ""; el("preco").value = "";
+  el("ativo").checked = true;
+  carregar(ultimoFiltro);
+}
+
+// events
+el("btnAdd").onclick = adicionar;
+el("btnBuscar").onclick = () => { page = 1; carregar({search: el("search").value, sort: el("sort").value}); };
+el("prev").onclick = () => { if (page>1) { page--; carregar(ultimoFiltro); } };
+el("next").onclick = () => { page++; carregar(ultimoFiltro); };
+
+carregar();
+</script>
+</body>
+</html>
