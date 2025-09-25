@@ -10,6 +10,41 @@
         <member name="M:HamburguerApi.Controllers.IngredientesController.GetAll(System.Nullable{System.Boolean},System.String,System.Int32,System.Int32,System.String)">
             <summary>Lista ingredientes com filtro e paginação.</summary>
         </member>
+        <member name="M:HamburguerApi.Controllers.PedidosController.Create(HamburguerApi.Dtos.PedidoCreateDto)">
+            <summary>Cria um pedido com itens, remoções de ingredientes e extras.</summary>
+            <remarks>
+            Exemplo:
+            {
+              "clienteId": 1,
+              "itens": [
+                { "hamburguerId": 1, "qtde": 2, "precoUnit": 22.9, "removerIngredientesIds": [3,5] },
+                { "hamburguerId": 2, "qtde": 1, "precoUnit": 27.5 }
+              ],
+              "extras": [
+                { "tipo": "Bebida", "nome": "Coca 350ml", "qtde": 2, "precoUnit": 6.00 },
+                { "tipo": "Acompanhamento", "nome": "Batata M", "qtde": 1, "precoUnit": 12.00 }
+              ]
+            }
+            </remarks>
+        </member>
+        <member name="M:HamburguerApi.Controllers.PedidosController.GetById(System.Int32)">
+            <summary>Busca pedido por ID (retorna detalhes: itens, remoções e extras).</summary>
+        </member>
+        <member name="M:HamburguerApi.Controllers.PedidosController.List(System.Nullable{HamburguerApi.Models.StatusPedido},System.Int32,System.Int32)">
+            <summary>Lista pedidos por status (opcional) com paginação.</summary>
+        </member>
+        <member name="M:HamburguerApi.Controllers.PedidosController.SetStatus(System.Int32,HamburguerApi.Models.StatusPedido)">
+            <summary>Define o status do pedido (ex.: EmPreparo, Pronto, SaiuEntrega...).</summary>
+        </member>
+        <member name="M:HamburguerApi.Controllers.PedidosController.Delete(System.Int32)">
+            <summary>Remove um pedido (e seus filhos) definitivamente.</summary>
+        </member>
+        <member name="T:HamburguerApi.Dtos.PedidoExtraCreateDto">
+            <summary>Tipo: Acompanhamento | Bebida | Sobremesa</summary>
+        </member>
+        <member name="M:HamburguerApi.Dtos.PedidoExtraCreateDto.#ctor(System.String,System.String,System.Int32,System.Decimal)">
+            <summary>Tipo: Acompanhamento | Bebida | Sobremesa</summary>
+        </member>
         <member name="T:HamburguerApi.Migrations.InitialCreate">
             <inheritdoc />
         </member>
@@ -56,6 +91,30 @@
             <inheritdoc />
         </member>
         <member name="M:HamburguerApi.Migrations.AddIngredientesClientes.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HamburguerApi.Migrations.Pedidos">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Pedidos.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Pedidos.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Pedidos.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HamburguerApi.Migrations.ExtrasAndMappings">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.ExtrasAndMappings.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.ExtrasAndMappings.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.ExtrasAndMappings.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

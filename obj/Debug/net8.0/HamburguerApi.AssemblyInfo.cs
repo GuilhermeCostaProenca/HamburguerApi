@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HamburguerApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b53f19de1440e9111e1df0e1bad2de8fc74f7d0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16fd8565babb199cbd1a2f16592ee3c36c1064cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("HamburguerApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HamburguerApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,6 +4,7 @@ using HamburguerApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HamburguerApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250925204446_Pedidos")]
+    partial class Pedidos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,58 +24,6 @@ namespace HamburguerApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HamburguerApi.Models.Acompanhamento", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Acompanhamento", (string)null);
-                });
-
-            modelBuilder.Entity("HamburguerApi.Models.Bebida", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Bebida", (string)null);
-                });
 
             modelBuilder.Entity("HamburguerApi.Models.Cliente", b =>
                 {
@@ -114,9 +65,7 @@ namespace HamburguerApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
@@ -124,8 +73,7 @@ namespace HamburguerApi.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -216,43 +164,6 @@ namespace HamburguerApi.Migrations
                     b.ToTable("Pedido", (string)null);
                 });
 
-            modelBuilder.Entity("HamburguerApi.Models.PedidoExtra", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
-
-                    b.Property<int>("PedidoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PedidoId1")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecoUnit")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("Qtde")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PedidoId");
-
-                    b.HasIndex("PedidoId1");
-
-                    b.ToTable("PedidoExtra", (string)null);
-                });
-
             modelBuilder.Entity("HamburguerApi.Models.PedidoItem", b =>
                 {
                     b.Property<int>("Id")
@@ -278,47 +189,6 @@ namespace HamburguerApi.Migrations
                     b.HasIndex("PedidoId");
 
                     b.ToTable("PedidoItem", (string)null);
-                });
-
-            modelBuilder.Entity("HamburguerApi.Models.PedidoItemRemocaoIngrediente", b =>
-                {
-                    b.Property<int>("PedidoItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredienteId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PedidoItemId", "IngredienteId");
-
-                    b.HasIndex("IngredienteId");
-
-                    b.ToTable("PedidoItemRemocaoIngrediente", (string)null);
-                });
-
-            modelBuilder.Entity("HamburguerApi.Models.Sobremesa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Ativo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sobremesa", (string)null);
                 });
 
             modelBuilder.Entity("HamburguerApi.Models.HamburguerIngrediente", b =>
@@ -349,21 +219,6 @@ namespace HamburguerApi.Migrations
                     b.Navigation("Cliente");
                 });
 
-            modelBuilder.Entity("HamburguerApi.Models.PedidoExtra", b =>
-                {
-                    b.HasOne("HamburguerApi.Models.Pedido", null)
-                        .WithMany()
-                        .HasForeignKey("PedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HamburguerApi.Models.Pedido", "Pedido")
-                        .WithMany()
-                        .HasForeignKey("PedidoId1");
-
-                    b.Navigation("Pedido");
-                });
-
             modelBuilder.Entity("HamburguerApi.Models.PedidoItem", b =>
                 {
                     b.HasOne("HamburguerApi.Models.Pedido", null)
@@ -371,25 +226,6 @@ namespace HamburguerApi.Migrations
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HamburguerApi.Models.PedidoItemRemocaoIngrediente", b =>
-                {
-                    b.HasOne("HamburguerApi.Models.Ingrediente", "Ingrediente")
-                        .WithMany()
-                        .HasForeignKey("IngredienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HamburguerApi.Models.PedidoItem", "PedidoItem")
-                        .WithMany()
-                        .HasForeignKey("PedidoItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingrediente");
-
-                    b.Navigation("PedidoItem");
                 });
 
             modelBuilder.Entity("HamburguerApi.Models.Pedido", b =>

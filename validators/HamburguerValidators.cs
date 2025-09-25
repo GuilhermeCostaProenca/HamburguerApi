@@ -1,20 +1,24 @@
 using FluentValidation;
 using HamburguerApi.Dtos;
 
-public class HamburguerCreateValidator : AbstractValidator<HamburguerCreateDto>
+namespace HamburguerApi.Validators
 {
-    public HamburguerCreateValidator()
+    public class HamburguerCreateValidator : AbstractValidator<HamburguerCreateDto>
     {
-        RuleFor(x => x.Nome).NotEmpty().MaximumLength(120);
-        RuleFor(x => x.Preco).GreaterThan(0).LessThanOrEqualTo(1000);
+        public HamburguerCreateValidator()
+        {
+            RuleFor(x => x.Nome).NotEmpty().MaximumLength(120);
+            RuleFor(x => x.Preco).GreaterThan(0).LessThanOrEqualTo(1000);
+        }
     }
-}
-public class HamburguerUpdateValidator : AbstractValidator<HamburgurguerUpdateDto>
-{
-    public HamburguerUpdateValidator()
+
+    public class HamburguerUpdateValidator : AbstractValidator<HamburguerUpdateDto>
     {
-        RuleFor(x => x.Id).GreaterThan(0);
-        RuleFor(x => x.Nome).NotEmpty().MaximumLength(120);
-        RuleFor(x => x.Preco).GreaterThan(0).LessThanOrEqualTo(1000);
+        public HamburguerUpdateValidator()
+        {
+            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Nome).NotEmpty().MaximumLength(120);
+            RuleFor(x => x.Preco).GreaterThan(0).LessThanOrEqualTo(1000);
+        }
     }
 }
