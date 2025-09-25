@@ -4,38 +4,8 @@
   <meta charset="utf-8" />
   <title>Lanchonete – Painel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root { --bg:#0f1115; --card:#161a22; --muted:#cbd5e1; --acc:#38bdf8; --ok:#22c55e; --bad:#ef4444 }
-    *{ box-sizing:border-box }
-    body{ margin:0; background:var(--bg); color:#e5e7eb; font-family:ui-sans-serif,system-ui,Arial }
-    .wrap{ max-width:1100px; margin:28px auto; padding:0 16px }
-    .tabs{ display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap }
-    .tab{ padding:10px 14px; border-radius:12px; border:1px solid #2b3241; background:#0d1117; cursor:pointer }
-    .tab.active{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none }
-    .card{ background:var(--card); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:16px }
-    h1{ margin:0 0 12px; font-size:22px }
-    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center }
-    input,select,button,textarea{ padding:10px 12px; border-radius:10px; border:1px solid #2b3241; background:#0d1117; color:#e5e7eb }
-    input:focus,select:focus,textarea:focus{ outline:1px solid var(--acc) }
-    button.primary{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none; cursor:pointer }
-    table{ width:100%; border-collapse:collapse; margin-top:12px }
-    th,td{ padding:10px; border-bottom:1px solid #1f2736; vertical-align:top }
-    th{ text-align:left; color:var(--muted); font-weight:600 }
-    .muted{ color:var(--muted) }
-    .pill{ padding:3px 8px; border-radius:999px; font-size:12px; display:inline-block }
-    .ok{ background:#052e21; color:#86efac }
-    .off{ background:#3a1f1f; color:#fecaca }
-    .error{ display:none; color:#fecaca; background:#3f1f1f; border:1px solid #7f1d1d; padding:10px; border-radius:12px; margin-top:8px }
-    .loader{ display:none; margin-left:6px }
-    .pagination{ display:flex; gap:8px; justify-content:flex-end; padding-top:8px }
-    .danger{ color:#fecaca; border-color:#7f1d1d }
-    .hr{ height:1px; background:#1f2736; margin:12px 0 }
-    .col3{ display:grid; grid-template-columns: repeat(3,1fr); gap:12px }
-    @media (max-width:900px){ .col3{ grid-template-columns:1fr } }
-    .kanban-col{ background:#0d1117; border:1px solid #2b3241; border-radius:12px; padding:12px; min-height:120px }
-    .card-order{ background:#101521; border:1px solid #273042; border-radius:10px; padding:10px; margin-bottom:10px }
-    .kbd{ font-family:ui-monospace,Consolas; background:#0b1220; padding:2px 6px; border-radius:6px; border:1px solid #283140; color:#cbd5e1 }
-  </style>
+  <!-- CSS externo em wwwroot/style.css -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div class="wrap">
@@ -51,14 +21,16 @@
   <!-- HAMBÚRGUERES -->
   <section id="burgers" class="card">
     <h1>Hambúrgueres</h1>
+
     <div class="row">
       <input id="b-nome" placeholder="Nome" />
       <input id="b-desc" placeholder="Descrição" />
       <input id="b-preco" type="number" step="0.01" placeholder="Preço" />
       <label class="muted"><input id="b-ativo" type="checkbox" checked /> Ativo</label>
       <button id="b-add" class="primary">Adicionar</button>
-      <span id="b-load" class="loader muted">Carregando...</span>
+      <span id="b-load" class="loader">Carregando...</span>
     </div>
+
     <div class="row" style="margin-top:8px">
       <input id="b-search" placeholder="Buscar por nome/descrição" />
       <select id="b-sort">
@@ -68,28 +40,37 @@
       </select>
       <button id="b-buscar">Buscar</button>
     </div>
+
     <div id="b-msg" class="error"></div>
     <div class="hr"></div>
+
     <table>
-      <thead><tr><th>ID</th><th>Nome</th><th>Preço</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
+      <thead>
+        <tr><th>ID</th><th>Nome</th><th>Preço</th><th>Status</th><th>Criado em</th><th>Ações</th></tr>
+      </thead>
       <tbody id="b-tbody"></tbody>
     </table>
+
     <div class="pagination">
-      <button id="b-prev">◀</button><span id="b-pinfo" class="muted"></span><button id="b-next">▶</button>
+      <button id="b-prev">◀</button>
+      <span id="b-pinfo" class="muted"></span>
+      <button id="b-next">▶</button>
     </div>
   </section>
 
   <!-- INGREDIENTES -->
   <section id="ingredients" class="card" style="display:none">
     <h1>Ingredientes</h1>
+
     <div class="row">
       <input id="i-nome" placeholder="Nome" />
       <label class="muted"><input id="i-alergeno" type="checkbox" /> Alergênico</label>
       <input id="i-custo" type="number" step="0.01" placeholder="Custo" />
       <label class="muted"><input id="i-ativo" type="checkbox" checked /> Ativo</label>
       <button id="i-add" class="primary">Adicionar</button>
-      <span id="i-load" class="loader muted">Carregando...</span>
+      <span id="i-load" class="loader">Carregando...</span>
     </div>
+
     <div class="row" style="margin-top:8px">
       <input id="i-search" placeholder="Buscar por nome" />
       <select id="i-sort">
@@ -99,39 +80,55 @@
       </select>
       <button id="i-buscar">Buscar</button>
     </div>
+
     <div id="i-msg" class="error"></div>
     <div class="hr"></div>
+
     <table>
-      <thead><tr><th>ID</th><th>Nome</th><th>Alergênico</th><th>Custo</th><th>Status</th><th>Ações</th></tr></thead>
+      <thead>
+        <tr><th>ID</th><th>Nome</th><th>Alergênico</th><th>Custo</th><th>Status</th><th>Ações</th></tr>
+      </thead>
       <tbody id="i-tbody"></tbody>
     </table>
+
     <div class="pagination">
-      <button id="i-prev">◀</button><span id="i-pinfo" class="muted"></span><button id="i-next">▶</button>
+      <button id="i-prev">◀</button>
+      <span id="i-pinfo" class="muted"></span>
+      <button id="i-next">▶</button>
     </div>
   </section>
 
   <!-- CLIENTES -->
   <section id="clients" class="card" style="display:none">
     <h1>Clientes</h1>
+
     <div class="row">
       <input id="c-nome" placeholder="Nome" />
       <input id="c-fone" placeholder="Telefone" />
       <input id="c-email" placeholder="Email" />
       <button id="c-add" class="primary">Adicionar</button>
-      <span id="c-load" class="loader muted">Carregando...</span>
+      <span id="c-load" class="loader">Carregando...</span>
     </div>
+
     <div class="row" style="margin-top:8px">
       <input id="c-search" placeholder="Buscar por nome/email" />
       <button id="c-buscar">Buscar</button>
     </div>
+
     <div id="c-msg" class="error"></div>
     <div class="hr"></div>
+
     <table>
-      <thead><tr><th>ID</th><th>Nome</th><th>Telefone</th><th>Email</th><th>Criado em</th><th>Ações</th></tr></thead>
+      <thead>
+        <tr><th>ID</th><th>Nome</th><th>Telefone</th><th>Email</th><th>Criado em</th><th>Ações</th></tr>
+      </thead>
       <tbody id="c-tbody"></tbody>
     </table>
+
     <div class="pagination">
-      <button id="c-prev">◀</button><span id="c-pinfo" class="muted"></span><button id="c-next">▶</button>
+      <button id="c-prev">◀</button>
+      <span id="c-pinfo" class="muted"></span>
+      <button id="c-next">▶</button>
     </div>
   </section>
 
@@ -139,13 +136,13 @@
   <section id="orders" class="card" style="display:none">
     <h1>Pedidos / Cozinha</h1>
 
-    <!-- Montagem rápida (SEM JSON) -->
+    <!-- Montagem rápida -->
     <div class="row">
       <input id="o-cliente" type="number" placeholder="ClienteId (opcional)" />
       <select id="o-burger"></select>
-      <input id="o-qtde" type="number" min="1" value="1" style="width:90px" />
+      <input id="o-qtde" type="number" min="1" value="1" />
       <button id="o-add-item" class="primary">Adicionar Item</button>
-      <span id="o-load" class="loader muted">Carregando...</span>
+      <span id="o-load" class="loader">Carregando...</span>
     </div>
 
     <div id="o-ings" class="muted" style="margin-top:6px"></div>
@@ -158,8 +155,8 @@
         <option value="Sobremesa">Sobremesa</option>
       </select>
       <input id="o-extra-nome" placeholder="Nome do extra" />
-      <input id="o-extra-preco" type="number" step="0.01" placeholder="Preço" style="width:120px" />
-      <input id="o-extra-qtde" type="number" min="1" value="1" style="width:90px" />
+      <input id="o-extra-preco" type="number" step="0.01" placeholder="Preço" />
+      <input id="o-extra-qtde" type="number" min="1" value="1" />
       <button id="o-add-extra">Adicionar Extra</button>
     </div>
 
@@ -169,15 +166,16 @@
     <div>
       <h3 class="muted">Carrinho</h3>
       <ul id="o-cart"></ul>
+      <div id="o-total" class="muted"></div>
       <button id="o-create" class="primary">Criar Pedido</button>
       <div id="o-msg" class="error"></div>
     </div>
 
     <div class="hr"></div>
 
-    <!-- Painel por status -->
+    <!-- Kanban -->
     <div class="row">
-      <span class="muted">Dica: selecione um pedido e use <span class="kbd">Avançar</span> para progredir no fluxo.</span>
+      <span class="muted">Dica: selecione um pedido e use “Avançar” para progredir no fluxo.</span>
     </div>
     <div class="col3" style="margin-top:10px">
       <div>
@@ -198,7 +196,7 @@
 </div>
 
 <script>
-/* ======= helpers base ======= */
+/* ======= helpers ======= */
 const base = location.origin;
 const apiB = base + "/api/hamburguer";
 const apiI = base + "/api/ingredientes";
@@ -206,25 +204,35 @@ const apiC = base + "/api/clientes";
 const apiP = base + "/api/pedidos";
 
 const $ = id => document.getElementById(id);
-const show = (el, on) => el.style.display = on ? "inline" : "none";
-const fmtMoney = v => (typeof v === "number") ? v.toFixed(2) : v;
+const show = (el, on) => { if(!el) return; el.style.display = on ? "inline" : "none"; }
+const fmtMoney = v => (typeof v === "number") ? v.toFixed(2) : (parseFloat(v||0)).toFixed(2);
 const fmtDate = v => v ? new Date(v).toLocaleString() : "—";
-async function http(url, options){ const r=await fetch(url,options); if(!r.ok) throw new Error(await r.text()||`HTTP ${r.status}`); return r.headers.get("content-type")?.includes("application/json")? r.json(): r.text(); }
+async function http(url, options){
+  const r=await fetch(url,options);
+  if(!r.ok) throw new Error((await r.text())||`HTTP ${r.status}`);
+  const ct = r.headers.get("content-type")||"";
+  return ct.includes("application/json") ? r.json() : r.text();
+}
 function extract(x){ if(Array.isArray(x)) return {list:x,total:x.length}; return {list:x.data??[], total:x.total??(x.data?.length??0)}; }
-function bindPager(section,total,state){ const pages=Math.max(1,Math.ceil(total/state.size)); $(`${section}-pinfo`).textContent=`Página ${state.page} de ${pages} — ${total} registros`; $(`${section}-prev`).disabled=state.page<=1; $(`${section}-next`).disabled=state.page>=pages; }
+function bindPager(section,total,state){
+  const pages=Math.max(1,Math.ceil(total/state.size));
+  $(`${section}-pinfo`).textContent=`Página ${state.page} de ${pages} — ${total} registros`;
+  $(`${section}-prev`).disabled=state.page<=1;
+  $(`${section}-next`).disabled=state.page>=pages;
+}
 
-/* ======= TABS ======= */
+/* ======= tabs ======= */
 document.querySelectorAll(".tab").forEach(btn=>{
   btn.onclick=()=>{
     document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
     document.querySelectorAll("section").forEach(s=>s.style.display="none");
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).style.display="block";
-    if(btn.dataset.tab==="orders") { oLoadAll(); loadMenu(); }
+    if(btn.dataset.tab==="orders"){ oLoadAll(); loadMenu(); }
   };
 });
 
-/* ======= BURGERS ======= */
+/* ======= hamburgueres ======= */
 const bState={ page:1,size:10,search:"",sort:"" };
 async function bLoad(){
   const q=new URLSearchParams({page:bState.page,pageSize:bState.size});
@@ -251,13 +259,19 @@ async function bLoad(){
   }catch(e){ $("b-msg").textContent=e.message; $("b-msg").style.display="block"; }
   finally{ show($("b-load"),false); }
 }
-async function bAdd(){ const body={nome:$("b-nome").value.trim(),descricao:$("b-desc").value.trim(),preco:parseFloat($("b-preco").value),ativo:$("b-ativo").checked}; await http(apiB,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}); $("b-nome").value=""; $("b-desc").value=""; $("b-preco").value=""; $("b-ativo").checked=true; bLoad(); }
+async function bAdd(){
+  const body={nome:$("b-nome").value.trim(),descricao:$("b-desc").value.trim(),preco:parseFloat($("b-preco").value||"0"),ativo:$("b-ativo").checked};
+  await http(apiB,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  $("b-nome").value=""; $("b-desc").value=""; $("b-preco").value=""; $("b-ativo").checked=true; bLoad();
+}
 async function bToggle(id,ativo){ await http(`${apiB}/${id}/ativar?ativo=${ativo}`,{method:"PATCH"}); bLoad(); }
 async function bDel(id){ await http(`${apiB}/${id}`,{method:"DELETE"}); bLoad(); }
-$("b-add").onclick=bAdd; $("b-buscar").onclick=()=>{ bState.page=1; bState.search=$("b-search").value; bState.sort=$("b-sort").value; bLoad(); };
-$("b-prev").onclick=()=>{ if(bState.page>1){ bState.page--; bLoad(); } }; $("b-next").onclick=()=>{ bState.page++; bLoad(); };
+$("b-add").onclick=bAdd;
+$("b-buscar").onclick=()=>{ bState.page=1; bState.search=$("b-search").value; bState.sort=$("b-sort").value; bLoad(); };
+$("b-prev").onclick=()=>{ if(bState.page>1){ bState.page--; bLoad(); } };
+$("b-next").onclick=()=>{ bState.page++; bLoad(); };
 
-/* ======= INGREDIENTES ======= */
+/* ======= ingredientes ======= */
 const iState={ page:1,size:10,search:"",sort:"" };
 async function iLoad(){
   const q=new URLSearchParams({page:iState.page,pageSize:iState.size});
@@ -284,13 +298,19 @@ async function iLoad(){
   }catch(e){ $("i-msg").textContent=e.message; $("i-msg").style.display="block"; }
   finally{ show($("i-load"),false); }
 }
-async function iAdd(){ const body={nome:$("i-nome").value.trim(),alergeno:$("i-alergeno").checked,custo:parseFloat($("i-custo").value),ativo:$("i-ativo").checked}; await http(apiI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}); $("i-nome").value=""; $("i-alergeno").checked=false; $("i-custo").value=""; $("i-ativo").checked=true; iLoad(); }
+async function iAdd(){
+  const body={nome:$("i-nome").value.trim(),alergeno:$("i-alergeno").checked,custo:parseFloat($("i-custo").value||"0"),ativo:$("i-ativo").checked};
+  await http(apiI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  $("i-nome").value=""; $("i-alergeno").checked=false; $("i-custo").value=""; $("i-ativo").checked=true; iLoad();
+}
 async function iToggle(id,ativo){ await http(`${apiI}/${id}/ativar?ativo=${ativo}`,{method:"PATCH"}); iLoad(); }
 async function iDel(id){ await http(`${apiI}/${id}`,{method:"DELETE"}); iLoad(); }
-$("i-add").onclick=iAdd; $("i-buscar").onclick=()=>{ iState.page=1; iState.search=$("i-search").value; iState.sort=$("i-sort").value; iLoad(); };
-$("i-prev").onclick=()=>{ if(iState.page>1){ iState.page--; iLoad(); } }; $("i-next").onclick=()=>{ iState.page++; iLoad(); };
+$("i-add").onclick=iAdd;
+$("i-buscar").onclick=()=>{ iState.page=1; iState.search=$("i-search").value; iState.sort=$("i-sort").value; iLoad(); };
+$("i-prev").onclick=()=>{ if(iState.page>1){ iState.page--; iLoad(); } };
+$("i-next").onclick=()=>{ iState.page++; iLoad(); };
 
-/* ======= CLIENTES ======= */
+/* ======= clientes ======= */
 const cState={ page:1,size:10,search:"" };
 async function cLoad(){
   const q=new URLSearchParams({page:cState.page,pageSize:cState.size});
@@ -317,12 +337,17 @@ async function cLoad(){
 }
 async function cAdd(){ const body={nome:$("c-nome").value.trim(),telefone:$("c-fone").value.trim(),email:$("c-email").value.trim()}; await http(apiC,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}); $("c-nome").value=""; $("c-fone").value=""; $("c-email").value=""; cLoad(); }
 async function cDel(id){ await http(`${apiC}/${id}`,{method:"DELETE"}); cLoad(); }
-$("c-add").onclick=cAdd; $("c-buscar").onclick=()=>{ cState.page=1; cState.search=$("c-search").value; cLoad(); };
-$("c-prev").onclick=()=>{ if(cState.page>1){ cState.page--; cLoad(); } }; $("c-next").onclick=()=>{ cState.page++; cLoad(); };
+$("c-add").onclick=cAdd;
+$("c-buscar").onclick=()=>{ cState.page=1; cState.search=$("c-search").value; cLoad(); };
+$("c-prev").onclick=()=>{ if(cState.page>1){ cState.page--; cLoad(); } };
+$("c-next").onclick=()=>{ cState.page++; cLoad(); };
 
-/* ======= PEDIDOS / COZINHA ======= */
+/* ======= pedidos / cozinha ======= */
 const statusFluxo=["Recebido","EmPreparo","Pronto","SaiuEntrega","Finalizado","Cancelado"];
-function proxStatus(s){ const i=statusFluxo.indexOf(s); return i<0? "Recebido" : (i+1<statusFluxo.length? statusFluxo[i+1] : s); }
+const proxStatus = s => {
+  const i=statusFluxo.indexOf(s);
+  return i<0? "Recebido" : (i+1<statusFluxo.length? statusFluxo[i+1] : s);
+};
 
 async function oLoad(status, targetId){
   const data=await http(`${apiP}?status=${status}`);
@@ -346,66 +371,81 @@ async function oLoadAll(){ await Promise.all([ oLoad("Recebido","col-recebido"),
 async function oAdvance(id, novo){ await http(`${apiP}/${id}/status?novo=${encodeURIComponent(novo)}`,{method:"PATCH"}); oLoadAll(); }
 async function oCancel(id){ await http(`${apiP}/${id}`,{method:"DELETE"}); oLoadAll(); }
 
-/* ======= MENU & CARRINHO (sem JSON) ======= */
+/* ======= menu & carrinho ======= */
 let menuBurgers=[], mapBurgerIngs=new Map();
 let cartItems=[], cartExtras=[];
+
 async function loadMenu(){
-  // hamburgueres
+  // burgers
   const r = await http(`${apiB}?ativo=true&page=1&pageSize=999`);
   menuBurgers = extract(r).list;
   const sel = $("o-burger");
   sel.innerHTML = menuBurgers.map(b=>`<option value="${b.id}" data-preco="${b.preco ?? b.Preco}">${b.nome ?? b.Nome} — R$ ${fmtMoney(b.preco ?? b.Preco)}</option>`).join("");
 
-  // ingredientes “removíveis” (simples: todos ativos)
-  const ings = await http(`${apiI}?page=1&pageSize=999&ativo=true`);
-  const listIngs = extract(ings).list;
-  mapBurgerIngs.clear();
-  menuBurgers.forEach(b=> mapBurgerIngs.set(b.id, listIngs));
+  // ingredientes (fallback: todos)
+  try{
+    const ings = await http(`${apiI}?page=1&pageSize=999&ativo=true`);
+    const listIngs = extract(ings).list;
+    mapBurgerIngs.clear();
+    menuBurgers.forEach(b=> mapBurgerIngs.set(b.id, listIngs));
+  }catch{ mapBurgerIngs.clear(); }
 
   renderRemovals();
+  renderCart();
 }
+
 function renderRemovals(){
   const id = parseInt($("o-burger").value);
   const ings = mapBurgerIngs.get(id) || [];
-  $("o-ings").innerHTML = `Remover: ` + ings.map(i=>`<label style="margin-right:8px"><input type="checkbox" class="rm" value="${i.id}"/> ${i.nome}</label>`).join("");
+  $("o-ings").innerHTML = ings.length
+    ? ("Remover: " + ings.map(i=>`<label style="margin-right:8px"><input type="checkbox" class="rm" value="${i.id}"> ${i.nome}</label>`).join(""))
+    : "";
 }
 $("o-burger").onchange = renderRemovals;
 
 $("o-add-item").onclick = ()=>{
   const id = parseInt($("o-burger").value);
   const b = menuBurgers.find(x=>x.id===id);
+  if(!b) return;
   const rm = Array.from(document.querySelectorAll("#o-ings .rm:checked")).map(x=>parseInt(x.value));
-  const qt = parseInt($("o-qtde").value) || 1;
-  const preco = (b.preco ?? b.Preco);
+  const qt = Math.max(1, parseInt($("o-qtde").value) || 1);
+  const preco = parseFloat((b.preco ?? b.Preco) || 0);
   cartItems.push({ hamburguerId:id, qtde:qt, precoUnit:preco, removerIngredientesIds: rm });
-  renderCart();
   document.querySelectorAll("#o-ings .rm").forEach(x=>x.checked=false);
+  renderCart();
 };
 
 $("o-add-extra").onclick = ()=>{
   const tipo = $("o-extra-tipo").value;
   const nome = $("o-extra-nome").value.trim();
-  const qtde = parseInt($("o-extra-qtde").value)||1;
-  const precoUnit = parseFloat($("o-extra-preco").value)||0;
+  const qtde = Math.max(1, parseInt($("o-extra-qtde").value)||1);
+  const precoUnit = Math.max(0, parseFloat($("o-extra-preco").value)||0);
   if(!nome) return;
   cartExtras.push({ tipo, nome, qtde, precoUnit });
   $("o-extra-nome").value=""; $("o-extra-qtde").value=1; $("o-extra-preco").value="";
   renderCart();
 };
 
+const totalPedido = () =>
+  cartItems.reduce((s,i)=> s + (i.qtde * (i.precoUnit||0)), 0) +
+  cartExtras.reduce((s,e)=> s + (e.qtde * (e.precoUnit||0)), 0);
+
 function renderCart(){
   const ul = $("o-cart"); ul.innerHTML="";
   cartItems.forEach((it,idx)=>{
     const b = menuBurgers.find(x=>x.id===it.hamburguerId);
+    const nome = b?.nome ?? b?.Nome ?? `#${it.hamburguerId}`;
+    const preco = fmtMoney(it.precoUnit||0);
     const li = document.createElement("li");
-    li.innerHTML = `🍔 ${b.nome ?? b.Nome} x${it.qtde} — R$ ${fmtMoney(it.precoUnit)} ${it.removerIngredientesIds?.length? `<span class="muted">(sem ${it.removerIngredientesIds.length} ing.)</span>`:""} <button onclick="delCartItem(${idx})">remover</button>`;
+    li.innerHTML = `🍔 ${nome} x${it.qtde} — R$ ${preco} ${it.removerIngredientesIds?.length? `<span class="muted">(sem ${it.removerIngredientesIds.length} ing.)</span>`:""} <button onclick="delCartItem(${idx})">remover</button>`;
     ul.appendChild(li);
   });
   cartExtras.forEach((ex,idx)=>{
     const li = document.createElement("li");
-    li.innerHTML = `➕ ${ex.tipo}: ${ex.nome} x${ex.qtde} — R$ ${fmtMoney(ex.precoUnit)} <button onclick="delCartExtra(${idx})">remover</button>`;
+    li.innerHTML = `➕ ${ex.tipo}: ${ex.nome} x${ex.qtde} — R$ ${fmtMoney(ex.precoUnit||0)} <button onclick="delCartExtra(${idx})">remover</button>`;
     ul.appendChild(li);
   });
+  $("o-total").textContent = `Total: R$ ${fmtMoney(totalPedido())}`;
 }
 window.delCartItem = i => { cartItems.splice(i,1); renderCart(); }
 window.delCartExtra = i => { cartExtras.splice(i,1); renderCart(); }
@@ -414,17 +454,19 @@ $("o-create").onclick = async ()=>{
   try{
     if(cartItems.length===0) throw new Error("Informe ao menos 1 item.");
     show($("o-load"),true); $("o-msg").style.display="none";
+    $("o-create").disabled = true;
+
     const clienteId = $("o-cliente").value ? parseInt($("o-cliente").value) : null;
     await http(apiP,{ method:"POST", headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({ clienteId, itens: cartItems, extras: cartExtras }) });
+
     cartItems=[]; cartExtras=[]; renderCart(); oLoadAll();
   }catch(e){ $("o-msg").textContent=e.message; $("o-msg").style.display="block"; }
-  finally{ show($("o-load"),false); }
+  finally{ show($("o-load"),false); $("o-create").disabled=false; }
 };
 
 /* ======= boot ======= */
-bLoad(); // primeira aba
+bLoad();
 </script>
 </body>
 </html>
- 

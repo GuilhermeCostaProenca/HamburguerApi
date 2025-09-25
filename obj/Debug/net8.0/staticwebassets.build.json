@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rJnKJGSe6rYMZAqUv7OvpKVU8Hs1byfAfW8ZGocR6cw=",
+  "Hash": "Ic6+iblzaHVNmRhlvlXVTSR8sr17TApCeRqYv/7+x08=",
   "Source": "HamburguerApi",
   "BasePath": "_content/HamburguerApi",
   "Mode": "Default",
@@ -34,6 +34,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\guilh\\HamburguerApi\\wwwroot\\style.css",
+      "SourceId": "HamburguerApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\guilh\\HamburguerApi\\wwwroot\\",
+      "BasePath": "_content/HamburguerApi",
+      "RelativePath": "style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\style.css"
     }
   ]
 }
