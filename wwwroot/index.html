@@ -2,166 +2,347 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <title>Lanchonete – Demo</title>
+  <title>Lanchonete – Painel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root { --bg:#0f1115; --card:#161a22; --muted:#cbd5e1; --acc:#38bdf8; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; }
-    body { margin:0; background:var(--bg); color:white; font-family:ui-sans-serif,system-ui,Arial; }
-    .wrap{ max-width:1000px; margin:32px auto; padding:0 16px; }
-    .card{ background:var(--card); padding:16px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
-    h1{ margin:0 0 16px; font-size:22px; }
-    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    input,button{ padding:10px 12px; border-radius:10px; border:1px solid #2b3241; background:#0d1117; color:#e5e7eb; }
-    input:focus{ outline:1px solid var(--acc); }
-    button{ cursor:pointer; background:linear-gradient(180deg,#1e293b,#131a26); }
-    button.primary{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none; }
-    table{ width:100%; border-collapse:collapse; margin-top:12px; }
-    th,td{ border-bottom:1px solid #1f2736; padding:10px; }
-    th{ text-align:left; color:var(--muted); font-weight:600; }
-    .pill{ padding:3px 8px; border-radius:999px; font-size:12px; }
-    .ok{ background:#022c22; color:#86efac; } .off{ background:#3f1f1f; color:#fecaca; }
-    .muted{ color:var(--muted); }
-    .error{ color:#fecaca; background:#3f1f1f; border:1px solid #7f1d1d; padding:10px; border-radius:12px; display:none; }
-    .loader{ display:none; }
-    .pagination{ display:flex; gap:8px; justify-content:flex-end; padding-top:8px;}
+    :root { --bg:#0f1115; --card:#161a22; --muted:#cbd5e1; --acc:#38bdf8; --ok:#22c55e; --bad:#ef4444; }
+    *{ box-sizing:border-box }
+    body{ margin:0; background:var(--bg); color:#e5e7eb; font-family:ui-sans-serif,system-ui,Arial }
+    .wrap{ max-width:1100px; margin:28px auto; padding:0 16px }
+    .tabs{ display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap }
+    .tab{ padding:10px 14px; border-radius:12px; border:1px solid #2b3241; background:#0d1117; cursor:pointer }
+    .tab.active{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none }
+    .card{ background:var(--card); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.25); padding:16px }
+    h1{ margin:0 0 12px; font-size:22px }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+    input,select,button{ padding:10px 12px; border-radius:10px; border:1px solid #2b3241; background:#0d1117; color:#e5e7eb }
+    input:focus,select:focus{ outline:1px solid var(--acc) }
+    button.primary{ background:linear-gradient(180deg,#0ea5e9,#0369a1); border:none; cursor:pointer }
+    table{ width:100%; border-collapse:collapse; margin-top:12px }
+    th,td{ padding:10px; border-bottom:1px solid #1f2736; vertical-align:top }
+    th{ text-align:left; color:var(--muted); font-weight:600 }
+    .muted{ color:var(--muted) }
+    .pill{ padding:3px 8px; border-radius:999px; font-size:12px; display:inline-block }
+    .ok{ background:#052e21; color:#86efac }
+    .off{ background:#3a1f1f; color:#fecaca }
+    .error{ display:none; color:#fecaca; background:#3f1f1f; border:1px solid #7f1d1d; padding:10px; border-radius:12px; margin-top:8px }
+    .loader{ display:none; margin-left:6px }
+    .pagination{ display:flex; gap:8px; justify-content:flex-end; padding-top:8px }
+    .danger{ color:#fecaca; border-color:#7f1d1d }
+    .hr{ height:1px; background:#1f2736; margin:12px 0 }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Hambúrgueres</h1>
+<div class="wrap">
 
-      <div class="row">
-        <input id="nome" placeholder="Nome" required />
-        <input id="descricao" placeholder="Descrição" />
-        <input id="preco" type="number" step="0.01" placeholder="Preço" required />
-        <label class="muted"><input id="ativo" type="checkbox" checked /> Ativo</label>
-        <button id="btnAdd" class="primary">Adicionar</button>
-        <span id="loader" class="loader muted">Carregando...</span>
-      </div>
-
-      <div class="row" style="margin-top:8px">
-        <input id="search" placeholder="Buscar por nome/descrição" />
-        <select id="sort">
-          <option value="">Ordenar por...</option>
-          <option value="Preco:asc">Preço ↑</option>
-          <option value="Preco:desc">Preço ↓</option>
-        </select>
-        <button id="btnBuscar">Buscar</button>
-      </div>
-
-      <div id="msg" class="error"></div>
-
-      <table>
-        <thead>
-          <tr><th>ID</th><th>Nome</th><th>Preço</th><th>Status</th><th>Criado em</th><th>Ações</th></tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-
-      <div class="pagination">
-        <button id="prev">◀</button>
-        <span id="pinfo" class="muted"></span>
-        <button id="next">▶</button>
-      </div>
-    </div>
+  <!-- NAV TABS -->
+  <div class="tabs">
+    <button class="tab active" data-tab="burgers">Hambúrgueres</button>
+    <button class="tab" data-tab="ingredients">Ingredientes</button>
+    <button class="tab" data-tab="clients">Clientes</button>
   </div>
 
+  <!-- HAMBÚRGUERES -->
+  <section id="burgers" class="card">
+    <h1>Hambúrgueres</h1>
+
+    <div class="row">
+      <input id="b-nome" placeholder="Nome" />
+      <input id="b-desc" placeholder="Descrição" />
+      <input id="b-preco" type="number" step="0.01" placeholder="Preço" />
+      <label class="muted"><input id="b-ativo" type="checkbox" checked /> Ativo</label>
+      <button id="b-add" class="primary">Adicionar</button>
+      <span id="b-load" class="loader muted">Carregando...</span>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <input id="b-search" placeholder="Buscar por nome/descrição" />
+      <select id="b-sort">
+        <option value="">Ordenar por...</option>
+        <option value="Preco:asc">Preço ↑</option>
+        <option value="Preco:desc">Preço ↓</option>
+      </select>
+      <button id="b-buscar">Buscar</button>
+    </div>
+
+    <div id="b-msg" class="error"></div>
+    <div class="hr"></div>
+
+    <table>
+      <thead><tr>
+        <th>ID</th><th>Nome</th><th>Preço</th><th>Status</th><th>Criado em</th><th>Ações</th>
+      </tr></thead>
+      <tbody id="b-tbody"></tbody>
+    </table>
+
+    <div class="pagination">
+      <button id="b-prev">◀</button>
+      <span id="b-pinfo" class="muted"></span>
+      <button id="b-next">▶</button>
+    </div>
+  </section>
+
+  <!-- INGREDIENTES -->
+  <section id="ingredients" class="card" style="display:none">
+    <h1>Ingredientes</h1>
+
+    <div class="row">
+      <input id="i-nome" placeholder="Nome" />
+      <label class="muted"><input id="i-alergeno" type="checkbox" /> Alergênico</label>
+      <input id="i-custo" type="number" step="0.01" placeholder="Custo" />
+      <label class="muted"><input id="i-ativo" type="checkbox" checked /> Ativo</label>
+      <button id="i-add" class="primary">Adicionar</button>
+      <span id="i-load" class="loader muted">Carregando...</span>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <input id="i-search" placeholder="Buscar por nome" />
+      <select id="i-sort">
+        <option value="">Ordenar por...</option>
+        <option value="custo:asc">Custo ↑</option>
+        <option value="custo:desc">Custo ↓</option>
+      </select>
+      <button id="i-buscar">Buscar</button>
+    </div>
+
+    <div id="i-msg" class="error"></div>
+    <div class="hr"></div>
+
+    <table>
+      <thead><tr>
+        <th>ID</th><th>Nome</th><th>Alergênico</th><th>Custo</th><th>Status</th><th>Ações</th>
+      </tr></thead>
+      <tbody id="i-tbody"></tbody>
+    </table>
+
+    <div class="pagination">
+      <button id="i-prev">◀</button>
+      <span id="i-pinfo" class="muted"></span>
+      <button id="i-next">▶</button>
+    </div>
+  </section>
+
+  <!-- CLIENTES -->
+  <section id="clients" class="card" style="display:none">
+    <h1>Clientes</h1>
+
+    <div class="row">
+      <input id="c-nome" placeholder="Nome" />
+      <input id="c-fone" placeholder="Telefone" />
+      <input id="c-email" placeholder="Email" />
+      <button id="c-add" class="primary">Adicionar</button>
+      <span id="c-load" class="loader muted">Carregando...</span>
+    </div>
+
+    <div class="row" style="margin-top:8px">
+      <input id="c-search" placeholder="Buscar por nome/email" />
+      <button id="c-buscar">Buscar</button>
+    </div>
+
+    <div id="c-msg" class="error"></div>
+    <div class="hr"></div>
+
+    <table>
+      <thead><tr>
+        <th>ID</th><th>Nome</th><th>Telefone</th><th>Email</th><th>Criado em</th><th>Ações</th>
+      </tr></thead>
+      <tbody id="c-tbody"></tbody>
+    </table>
+
+    <div class="pagination">
+      <button id="c-prev">◀</button>
+      <span id="c-pinfo" class="muted"></span>
+      <button id="c-next">▶</button>
+    </div>
+  </section>
+
+</div>
+
 <script>
-const api = location.origin + "/api/hamburguer";
-let page = 1, pageSize = 10, ultimoFiltro = {search:"", sort:""};
+/* ======= helpers base ======= */
+const base = location.origin;
+const apiB = base + "/api/hamburguer";
+const apiI = base + "/api/ingredientes";
+const apiC = base + "/api/clientes";
 
-const el = id => document.getElementById(id);
-const show = (node, on) => node.style.display = on ? "inline" : "none";
+const $ = id => document.getElementById(id);
+const show = (el, on) => el.style.display = on ? "inline" : "none";
+const fmtMoney = v => (typeof v === "number") ? v.toFixed(2) : v;
+const fmtDate = v => v ? new Date(v).toLocaleString() : "—";
 
-async function carregar({search="", sort=""} = {}) {
-  ultimoFiltro = {search, sort};
-  const q = new URLSearchParams();
-  if (search) q.set("search", search);
-  if (sort) q.set("sort", sort);
-  q.set("page", page); q.set("pageSize", pageSize);
+async function http(url, options) {
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error(await res.text() || (`HTTP ${res.status}`));
+  return res.headers.get("content-type")?.includes("application/json") ? res.json() : res.text();
+}
+function extract(listOrObj) {
+  if (Array.isArray(listOrObj)) return { list: listOrObj, total: listOrObj.length };
+  return { list: listOrObj.data ?? [], total: listOrObj.total ?? (listOrObj.data?.length ?? 0) };
+}
+function bindPager(section, total, state) {
+  const totalPages = Math.max(1, Math.ceil(total / state.size));
+  $(section+"-pinfo").textContent = `Página ${state.page} de ${totalPages} — ${total} registros`;
+  $(section+"-prev").disabled = state.page <= 1;
+  $(section+"-next").disabled = state.page >= totalPages;
+}
 
-  show(el("loader"), true); el("msg").style.display="none";
+/* ======= TABS ======= */
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("section").forEach(s => s.style.display = "none");
+    btn.classList.add("active");
+    const id = btn.dataset.tab;
+    document.getElementById(id).style.display = "block";
+  };
+});
 
+/* ======= BURGERS ======= */
+const bState = { page:1, size:10, search:"", sort:"" };
+
+async function bLoad() {
+  const q = new URLSearchParams({ page:bState.page, pageSize:bState.size });
+  if (bState.search) q.set("search", bState.search);
+  if (bState.sort) q.set("sort", bState.sort);
+
+  show($("b-load"), true); $("b-msg").style.display="none";
   try {
-    const res = await fetch(`${api}?${q.toString()}`);
-    if (!res.ok) throw new Error("Falha ao buscar itens");
-    const data = await res.json();
-
-    // suporta { data, total } ou array simples
-    const list = Array.isArray(data) ? data : (data.data ?? []);
-    const total = Array.isArray(data) ? list.length : (data.total ?? list.length);
-
-    const tbody = el("tbody"); tbody.innerHTML = "";
+    const data = await http(`${apiB}?${q.toString()}`);
+    const { list, total } = extract(data);
+    const tbody = $("b-tbody"); tbody.innerHTML = "";
     list.forEach(h => {
       const tr = document.createElement("tr");
-      const preco = (typeof h.preco === "number") ? h.preco.toFixed(2) : h.preco;
-      const criado = h.criadoEm ? new Date(h.criadoEm).toLocaleString() : "—";
       tr.innerHTML = `
         <td>${h.id}</td>
         <td>${h.nome ?? h.Nome}</td>
-        <td>R$ ${preco}</td>
-        <td><span class="pill ${h.ativo ? 'ok' : 'off'}">${h.ativo ? 'Ativo' : 'Inativo'}</span></td>
-        <td class="muted">${criado}</td>
+        <td>R$ ${fmtMoney(h.preco ?? h.Preco)}</td>
+        <td><span class="pill ${h.ativo ? 'ok':'off'}">${h.ativo ? 'Ativo':'Inativo'}</span></td>
+        <td class="muted">${fmtDate(h.criadoEm ?? h.CriadoEm)}</td>
         <td>
-          <button onclick="toggle(${h.id}, ${!h.ativo})">${h.ativo ? "Desativar" : "Ativar"}</button>
-          <button onclick="remover(${h.id})" style="color:#fecaca;border-color:#7f1d1d;">Excluir</button>
+          <button onclick="bToggle(${h.id}, ${!h.ativo})">${h.ativo ? "Desativar":"Ativar"}</button>
+          <button class="danger" onclick="bDel(${h.id})">Excluir</button>
         </td>`;
       tbody.appendChild(tr);
     });
-
-    const totalPages = Math.max(1, Math.ceil(total / pageSize));
-    el("pinfo").textContent = `Página ${page} de ${totalPages} — ${total} registros`;
-    el("prev").disabled = page <= 1;
-    el("next").disabled = page >= totalPages;
-  } catch (err) {
-    el("msg").textContent = err.message;
-    el("msg").style.display = "block";
+    bindPager("b", total, bState);
+  } catch(e) {
+    $("b-msg").textContent = e.message; $("b-msg").style.display="block";
   } finally {
-    show(el("loader"), false);
+    show($("b-load"), false);
   }
 }
-
-async function toggle(id, ativo) {
-  await fetch(`${api}/${id}/ativar?ativo=${ativo}`, { method: "PATCH" });
-  carregar(ultimoFiltro);
-}
-
-async function remover(id) {
-  await fetch(`${api}/${id}`, { method: "DELETE" });
-  carregar(ultimoFiltro);
-}
-
-async function adicionar() {
+async function bAdd() {
   const body = {
-    nome: el("nome").value.trim(),
-    descricao: el("descricao").value.trim(),
-    preco: parseFloat(el("preco").value),
-    ativo: el("ativo").checked
+    nome: $("b-nome").value.trim(),
+    descricao: $("b-desc").value.trim(),
+    preco: parseFloat($("b-preco").value),
+    ativo: $("b-ativo").checked
   };
-  const res = await fetch(api, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    el("msg").textContent = err || "Erro ao adicionar";
-    el("msg").style.display = "block";
-    return;
-  }
-  el("nome").value = ""; el("descricao").value = ""; el("preco").value = "";
-  el("ativo").checked = true;
-  carregar(ultimoFiltro);
+  await http(apiB, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(body) });
+  $("b-nome").value = ""; $("b-desc").value = ""; $("b-preco").value = ""; $("b-ativo").checked = true;
+  bLoad();
 }
+async function bToggle(id, ativo){ await http(`${apiB}/${id}/ativar?ativo=${ativo}`, { method:"PATCH" }); bLoad(); }
+async function bDel(id){ await http(`${apiB}/${id}`, { method:"DELETE" }); bLoad(); }
+$("b-add").onclick = bAdd;
+$("b-buscar").onclick = () => { bState.page=1; bState.search=$("b-search").value; bState.sort=$("b-sort").value; bLoad(); };
+$("b-prev").onclick = () => { if (bState.page>1){ bState.page--; bLoad(); } };
+$("b-next").onclick = () => { bState.page++; bLoad(); };
 
-// events
-el("btnAdd").onclick = adicionar;
-el("btnBuscar").onclick = () => { page = 1; carregar({search: el("search").value, sort: el("sort").value}); };
-el("prev").onclick = () => { if (page>1) { page--; carregar(ultimoFiltro); } };
-el("next").onclick = () => { page++; carregar(ultimoFiltro); };
+/* ======= INGREDIENTES ======= */
+const iState = { page:1, size:10, search:"", sort:"" };
 
-carregar();
+async function iLoad(){
+  const q = new URLSearchParams({ page:iState.page, pageSize:iState.size });
+  if (iState.search) q.set("search", iState.search);
+  if (iState.sort) q.set("sort", iState.sort);
+
+  show($("i-load"), true); $("i-msg").style.display="none";
+  try{
+    const data = await http(`${apiI}?${q.toString()}`);
+    const { list, total } = extract(data);
+    const tbody = $("i-tbody"); tbody.innerHTML = "";
+    list.forEach(i => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i.id}</td>
+        <td>${i.nome}</td>
+        <td>${i.alergeno ? "Sim":"Não"}</td>
+        <td>R$ ${fmtMoney(i.custo)}</td>
+        <td><span class="pill ${i.ativo ? 'ok':'off'}">${i.ativo ? 'Ativo':'Inativo'}</span></td>
+        <td>
+          <button onclick="iToggle(${i.id}, ${!i.ativo})">${i.ativo ? "Desativar":"Ativar"}</button>
+          <button class="danger" onclick="iDel(${i.id})">Excluir</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    bindPager("i", total, iState);
+  }catch(e){
+    $("i-msg").textContent = e.message; $("i-msg").style.display="block";
+  }finally{ show($("i-load"), false); }
+}
+async function iAdd(){
+  const body = {
+    nome: $("i-nome").value.trim(),
+    alergeno: $("i-alergeno").checked,
+    custo: parseFloat($("i-custo").value),
+    ativo: $("i-ativo").checked
+  };
+  await http(apiI, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(body) });
+  $("i-nome").value = ""; $("i-alergeno").checked=false; $("i-custo").value=""; $("i-ativo").checked=true;
+  iLoad();
+}
+async function iToggle(id, ativo){ await http(`${apiI}/${id}/ativar?ativo=${ativo}`, { method:"PATCH" }); iLoad(); }
+async function iDel(id){ await http(`${apiI}/${id}`, { method:"DELETE" }); iLoad(); }
+$("i-add").onclick = iAdd;
+$("i-buscar").onclick = () => { iState.page=1; iState.search=$("i-search").value; iState.sort=$("i-sort").value; iLoad(); };
+$("i-prev").onclick = () => { if (iState.page>1){ iState.page--; iLoad(); } };
+$("i-next").onclick = () => { iState.page++; iLoad(); };
+
+/* ======= CLIENTES ======= */
+const cState = { page:1, size:10, search:"" };
+
+async function cLoad(){
+  const q = new URLSearchParams({ page:cState.page, pageSize:cState.size });
+  if (cState.search) q.set("search", cState.search);
+
+  show($("c-load"), true); $("c-msg").style.display="none";
+  try{
+    const data = await http(`${apiC}?${q.toString()}`);
+    const { list, total } = extract(data);
+    const tbody = $("c-tbody"); tbody.innerHTML = "";
+    list.forEach(c => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${c.id}</td>
+        <td>${c.nome}</td>
+        <td>${c.telefone ?? "—"}</td>
+        <td>${c.email ?? "—"}</td>
+        <td class="muted">${fmtDate(c.criadoEm)}</td>
+        <td>
+          <button class="danger" onclick="cDel(${c.id})">Excluir</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+    bindPager("c", total, cState);
+  }catch(e){
+    $("c-msg").textContent = e.message; $("c-msg").style.display="block";
+  }finally{ show($("c-load"), false); }
+}
+async function cAdd(){
+  const body = { nome:$("c-nome").value.trim(), telefone:$("c-fone").value.trim(), email:$("c-email").value.trim() };
+  await http(apiC, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(body) });
+  $("c-nome").value=""; $("c-fone").value=""; $("c-email").value="";
+  cLoad();
+}
+async function cDel(id){ await http(`${apiC}/${id}`, { method:"DELETE" }); cLoad(); }
+$("c-add").onclick = cAdd;
+$("c-buscar").onclick = () => { cState.page=1; cState.search=$("c-search").value; cLoad(); };
+$("c-prev").onclick = () => { if (cState.page>1){ cState.page--; cLoad(); } };
+$("c-next").onclick = () => { cState.page++; cLoad(); };
+
+/* ======= boot ======= */
+bLoad(); // primeira aba
 </script>
 </body>
 </html>

@@ -173,3 +173,4 @@ C:\Users\guilh\HamburguerApi\obj\Debug\net8.0\HamburguerApi.xml
 C:\Users\guilh\HamburguerApi\obj\Debug\net8.0\HamburguerApi.pdb
 C:\Users\guilh\HamburguerApi\obj\Debug\net8.0\HamburguerApi.genruntimeconfig.cache
 C:\Users\guilh\HamburguerApi\obj\Debug\net8.0\ref\HamburguerApi.dll
+C:\Users\guilh\HamburguerApi\obj\Debug\net8.0\HamburguerApi.sourcelink.json

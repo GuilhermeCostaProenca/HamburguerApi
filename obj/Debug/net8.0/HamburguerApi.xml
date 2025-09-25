@@ -4,6 +4,12 @@
         <name>HamburguerApi</name>
     </assembly>
     <members>
+        <member name="M:HamburguerApi.Controllers.ClientesController.GetAll(System.String,System.Int32,System.Int32)">
+            <summary>Lista clientes com busca e paginação.</summary>
+        </member>
+        <member name="M:HamburguerApi.Controllers.IngredientesController.GetAll(System.Nullable{System.Boolean},System.String,System.Int32,System.Int32,System.String)">
+            <summary>Lista ingredientes com filtro e paginação.</summary>
+        </member>
         <member name="T:HamburguerApi.Migrations.InitialCreate">
             <inheritdoc />
         </member>
@@ -26,6 +32,30 @@
             <inheritdoc />
         </member>
         <member name="M:HamburguerApi.Migrations.SeedFix_StaticDates.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HamburguerApi.Migrations.Ingredientes">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Ingredientes.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Ingredientes.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.Ingredientes.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:HamburguerApi.Migrations.AddIngredientesClientes">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.AddIngredientesClientes.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.AddIngredientesClientes.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:HamburguerApi.Migrations.AddIngredientesClientes.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
