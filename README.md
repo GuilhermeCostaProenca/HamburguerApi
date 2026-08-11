@@ -1,39 +1,27 @@
-# Hamburguer Api
+# Hamburguer API
 
-[![CI](https://github.com/GuilhermeCostaProenca/hamburguer-api/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GuilhermeCostaProenca/hamburguer-api/actions/workflows/ci.yml)
-
-
-REST API for burger ordering and management built with C#.
+A clean, well-structured REST API for a burger-ordering domain — built to show solid backend fundamentals in ASP.NET Core.
 
 ## Highlights
-- Production-focused repository with clear structure and maintainable code.
-- Versioned with Git and documented for collaboration and review.
-- Continuously improved as part of my professional portfolio.
 
-## Tech Stack
-"backend", "csharp", "dotnet", "rest-api"
+- **RESTful controllers** for the full domain: burgers, ingredients, extras (drinks, sides, desserts), customers and orders
+- **Entity Framework Core** for data access
+- **FluentValidation** for request validation
+- **Swagger / OpenAPI** documentation out of the box
+- **DTOs** separating the API contract from the data model
+- Enums serialized as strings, CORS enabled, clean `Program.cs` bootstrap
 
-## Getting Started
-### Prerequisites
-- Git
-- Runtime/dependencies for this stack (see project files)
+## Stack
 
-### Clone
-`ash
+C# · .NET (ASP.NET Core) · Entity Framework Core · FluentValidation · Swagger
+
+## Getting started
+
+```bash
 git clone https://github.com/GuilhermeCostaProenca/hamburguer-api.git
 cd hamburguer-api
-`",
-    ",
-    
-`ash
-# install dependencies
-# run project
-`",
-    ",
-    
-Active and maintained.
+dotnet restore
+dotnet run
+```
 
-## Author
-**Guilherme Costa Proenca**
-- GitHub: https://github.com/GuilhermeCostaProenca
-
+The Swagger UI is available at the app root once it's running.
